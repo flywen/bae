@@ -8,4 +8,4 @@ def test(request):
     return HttpResponse('it is a test for bae')
     
 def weixin(request):
-    return HttpResponse('it is a weixin!!! but you visit here is an error')
+    return HttpResponse('it is a weixin!!! but you visit here xxx is an error')
