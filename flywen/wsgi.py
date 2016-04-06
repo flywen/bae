@@ -8,9 +8,12 @@ https://docs.djangoproject.com/en/1.8/howto/deployment/wsgi/
 """
 
 import os
-
-from django.core.wsgi import get_wsgi_application
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "flywen.settings")
 
-application = get_wsgi_application()
+if 'SERVER_SOFTWARE' in os.environ:
+    from django.core.handlers.wsgi import WSGIHandler
+    from bae.core.wsgi import WSGIApplication
+    application = WSGIApplication(WSGIHandler())
+else:
+    from django.core.wsgi import get_wsgi_application
+    application = get_wsgi_application()
