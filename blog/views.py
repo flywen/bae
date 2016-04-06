@@ -7,3 +7,5 @@ from django.http.response import HttpResponse
 def test(request):
     return HttpResponse('it is a test for bae')
     
+def weixin(request):
+    return HttpResponse('it is a weixin')

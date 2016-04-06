@@ -19,5 +19,6 @@ from blog.views import *
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$',test)
+    url(r'^$',test),
+    url(r'^weixin/', weixin)
 ]
