@@ -11,10 +11,13 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "flywen.settings")
 
 if 'SERVER_SOFTWARE' in os.environ:
-    from django.core.handlers.wsgi import WSGIHandler
+    from django.core.wsgi import get_wsgi_application
     from bae.core.wsgi import WSGIApplication
+    application = WSGIApplication(get_wsgi_application())
+#     from django.core.handlers.wsgi import WSGIHandler
 #     from bae.core.wsgi import WSGIApplication
-    application = WSGIApplication(WSGIHandler())
+#     from bae.core.wsgi import WSGIApplication
+#     application = WSGIApplication(WSGIHandler())
 else:
     from django.core.wsgi import get_wsgi_application
     application = get_wsgi_application()
