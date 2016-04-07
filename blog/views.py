@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 import hashlib
 from xml.etree import ElementTree as etree
 from django.utils.encoding import smart_str, smart_unicode
-from jinja2._stringdefs import content
+# from jinja2._stringdefs import content
 import urllib2
 import json
 
