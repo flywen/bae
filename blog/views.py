@@ -9,7 +9,7 @@ from django.utils.encoding import smart_str, smart_unicode
 from jinja2._stringdefs import content
 import urllib2
 import json
-from nntplib import resp
+
 
 # Create your views here.
 
@@ -62,7 +62,7 @@ def getweather(content):
         url_start = 'http://op.juhe.cn/onebox/weather/query?cityname='
         url_end = '&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
         url = url_start + content +url_end
-        resp = urllib2.urlopen(url)
-        weather = json.load(resp.read())
+        jj = urllib2.urlopen(url)
+        weather = json.load(jj.read())
         info = weather['result']['data']['life']['info']['kongtiao']
         return info
