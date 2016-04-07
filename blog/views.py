@@ -37,7 +37,7 @@ def weixin(request):
             url = 'http://op.juhe.cn/onebox/weather/query?cityname=武汉&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
             jj = urllib2.urlopen(url)
             weather = json.loads(jj.read())
-            infoo = weather['reason']
+            infoo = weather['reason'].encode('utf8')
             return HttpResponse("这里是微信接口，请关注微信号：flywencn%s"%infoo)
 
     else:
