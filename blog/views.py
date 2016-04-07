@@ -76,6 +76,6 @@ def getweather(content):
         url = url_start + content +url_end
         jj = urllib2.urlopen(url)
         weather = json.loads(jj.read())
-#         infoo = weather['result']['data']['life']['info']['kongtiao'].encode('utf8')
-        infoo = weather['reason'].encode('utf8')
+        infoo = weather['result']['data']['realtime']['weather']['info'].encode('utf8')
+#         infoo = weather['reason'].encode('utf8')
         return infoo
