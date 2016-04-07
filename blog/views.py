@@ -51,7 +51,7 @@ def weixin(request):
         url_start = 'http://op.juhe.cn/onebox/weather/query?cityname='
         url_end = '&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
 #         url = url_start + Content +url_end
-        url = 'http://op.juhe.cn/onebox/weather/query?cityname=%E6%AD%A6%E6%B1%89&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
+        url = 'http://op.juhe.cn/onebox/weather/query?cityname=武汉&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
         jj = urllib2.urlopen(url)
         weather = json.load(jj.read())
         infoo = weather['reason']
