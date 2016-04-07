@@ -47,13 +47,21 @@ def weixin(request):
         MsgType = xml.find('MsgType').text
         Content = xml.find('Content').text.encode('utf8')
         MsgId = xml.find('MsgId').text
+        
+        url_start = 'http://op.juhe.cn/onebox/weather/query?cityname='
+        url_end = '&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
+        url = url_start + Content +url_end
+        jj = urllib2.urlopen(url)
+        weather = json.load(jj.read())
+        infoo = weather['reason']
+        
         reply_xml = """<xml>
         <ToUserName><![CDATA[%s]]></ToUserName>
         <FromUserName><![CDATA[%s]]></FromUserName>
         <CreateTime>%s</CreateTime>
         <MsgType><![CDATA[text]]></MsgType>
         <Content><![CDATA[%s]]></Content>
-        </xml>"""%(FromUserName,ToUserName,CreateTime,getweather(Content) + " 还在开发中...")
+        </xml>"""%(FromUserName,ToUserName,CreateTime,infoo)
         return HttpResponse(reply_xml,content_type='application/xml')
     
    
