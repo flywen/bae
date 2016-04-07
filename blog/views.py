@@ -34,11 +34,11 @@ def weixin(request):
         if tmp_str == signature:
             return HttpResponse(echostr)
         else:
-            url = 'http://op.juhe.cn/onebox/weather/query?cityname=武汉&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
-            jj = urllib2.urlopen(url)
-            weather = json.loads(jj.read())
-            infoo = weather['reason'].encode('utf8')
-            return HttpResponse("这里是微信接口，请关注微信号：flywencn%s"%infoo)
+#             url = 'http://op.juhe.cn/onebox/weather/query?cityname=武汉&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
+#             jj = urllib2.urlopen(url)
+#             weather = json.loads(jj.read())
+#             infoo = weather['reason'].encode('utf8')
+            return HttpResponse("这里是微信接口，请关注微信号：flywencn")
 
     else:
 
@@ -52,13 +52,13 @@ def weixin(request):
         Content = xml.find('Content').text.encode('utf8')
         MsgId = xml.find('MsgId').text
         
-        url_start = 'http://op.juhe.cn/onebox/weather/query?cityname='
-        url_end = '&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
-#         url = url_start + Content +url_end
-        url = 'http://op.juhe.cn/onebox/weather/query?cityname=武汉&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
-        jj = urllib2.urlopen(url)
-        weather = json.load(jj.read())
-        infoo = weather['reason']
+#         url_start = 'http://op.juhe.cn/onebox/weather/query?cityname='
+#         url_end = '&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
+# #         url = url_start + Content +url_end
+#         url = 'http://op.juhe.cn/onebox/weather/query?cityname=武汉&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
+#         jj = urllib2.urlopen(url)
+#         weather = json.load(jj.read())
+#         infoo = weather['reason']
         
         reply_xml = """<xml>
         <ToUserName><![CDATA[%s]]></ToUserName>
@@ -66,7 +66,7 @@ def weixin(request):
         <CreateTime>%s</CreateTime>
         <MsgType><![CDATA[text]]></MsgType>
         <Content><![CDATA[%s]]></Content>
-        </xml>"""%(FromUserName,ToUserName,CreateTime,infoo)
+        </xml>"""%(FromUserName,ToUserName,CreateTime,getweather(Content))
         return HttpResponse(reply_xml,content_type='application/xml')
     
    
@@ -75,7 +75,7 @@ def getweather(content):
         url_end = '&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
         url = url_start + content +url_end
         jj = urllib2.urlopen(url)
-        weather = json.load(jj.read())
-#         infoo = weather['result']['data']['life']['info']['kongtiao']
-        infoo = weather['reason']
+        weather = json.loads(jj.read())
+        infoo = weather['result']['data']['life']['info']['kongtiao'].encode('utf8')
+#         infoo = weather['reason'].encode('utf8')
         return infoo
