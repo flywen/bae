@@ -30,7 +30,7 @@ def weixin(request):
         if tmp_str == signature:
             return HttpResponse(echostr)
         else:
-            return HttpResponse("这是微信接口，不提供其他服务！")
+            return HttpResponse("杩欓噷鏄井淇℃帴鍙ｏ紝璇峰叧娉ㄥ井淇″彿锛歠lywencn")
 
     else:
 
@@ -49,5 +49,5 @@ def weixin(request):
         <CreateTime>%s</CreateTime>
         <MsgType><![CDATA[text]]></MsgType>
         <Content><![CDATA[%s]]></Content>
-        </xml>"""%(FromUserName,ToUserName,CreateTime,Content + " 您好，公众号开发中，敬请期待...")
+        </xml>"""%(FromUserName,ToUserName,CreateTime,Content + " 杩樺湪寮�鍙戜腑...")
         return HttpResponse(reply_xml,content_type='application/xml')
