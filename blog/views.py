@@ -6,7 +6,6 @@ from django.views.decorators.csrf import csrf_exempt
 import hashlib
 from xml.etree import ElementTree as etree
 from django.utils.encoding import smart_str, smart_unicode
-# from jinja2._stringdefs import content
 import urllib2
 import json
 
@@ -64,5 +63,6 @@ def getweather(content):
         url = url_start + content +url_end
         jj = urllib2.urlopen(url)
         weather = json.load(jj.read())
-        info = weather['result']['data']['life']['info']['kongtiao']
-        return info
+#         infoo = weather['result']['data']['life']['info']['kongtiao']
+        infoo = weather['reason']
+        return infoo
