@@ -41,7 +41,7 @@ def weixin(request):
         FromUserName = xml.find('FromUserName').text
         CreateTime = xml.find('CreateTime').text
         MsgType = xml.find('MsgType').text
-        Content = xml.find('Content').text
+        Content = xml.find('Content').text.encode('utf8')
         MsgId = xml.find('MsgId').text
         reply_xml = """<xml>
         <ToUserName><![CDATA[%s]]></ToUserName>
