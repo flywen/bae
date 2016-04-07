@@ -15,9 +15,6 @@ import json
 def test(request):
     return HttpResponse('it is a test for bae')
     
-# def weixin(request):
-#     return HttpResponse('it is a weixin!!! but you visit here xxx is an error')
-
 @csrf_exempt
 def weixin(request):
 #     微信服务器使用GET方法发送验证信息
@@ -34,10 +31,6 @@ def weixin(request):
         if tmp_str == signature:
             return HttpResponse(echostr)
         else:
-#             url = 'http://op.juhe.cn/onebox/weather/query?cityname=武汉&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
-#             jj = urllib2.urlopen(url)
-#             weather = json.loads(jj.read())
-#             infoo = weather['reason'].encode('utf8')
             return HttpResponse("这里是微信接口，请关注微信号：flywencn")
 
     else:
@@ -50,16 +43,7 @@ def weixin(request):
         CreateTime = xml.find('CreateTime').text
         MsgType = xml.find('MsgType').text
         Content = xml.find('Content').text.encode('utf8')
-        MsgId = xml.find('MsgId').text
-        
-#         url_start = 'http://op.juhe.cn/onebox/weather/query?cityname='
-#         url_end = '&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
-# #         url = url_start + Content +url_end
-#         url = 'http://op.juhe.cn/onebox/weather/query?cityname=武汉&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
-#         jj = urllib2.urlopen(url)
-#         weather = json.load(jj.read())
-#         infoo = weather['reason']
-        
+        MsgId = xml.find('MsgId').text 
         reply_xml = """<xml>
         <ToUserName><![CDATA[%s]]></ToUserName>
         <FromUserName><![CDATA[%s]]></FromUserName>
@@ -76,6 +60,7 @@ def getweather(content):
         url = url_start + content +url_end
         jj = urllib2.urlopen(url)
         weather = json.loads(jj.read())
-        infoo = weather['result']['data']['realtime']['weather']['info'].encode('utf8')
-#         infoo = weather['reason'].encode('utf8')
+        if weather['error_code'] == 0:
+            infoo = weather['result']['data']['realtime']['weather']['info'].encode('utf8')
+        else: infoo = '请输入正确的城市名！'
         return infoo
