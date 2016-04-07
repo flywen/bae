@@ -62,5 +62,6 @@ def getweather(content):
         weather = json.loads(jj.read())
         if weather['error_code'] == 0:
             infoo = weather['result']['data']['realtime']['weather']['info'].encode('utf8')
-        else: infoo = '请输入正确的城市名！'
+        else: 
+            infoo = '请输入正确的城市名！'
         return infoo
