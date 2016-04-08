@@ -1,5 +1,5 @@
 #-*- coding:utf-8 -*-
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.template.context_processors import request
 from django.http.response import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -31,7 +31,8 @@ def weixin(request):
         if tmp_str == signature:
             return HttpResponse(echostr)
         else:
-            return HttpResponse("这里是微信接口，请关注微信号：flywencn")
+#             return HttpResponse("这里是微信接口，请关注微信号：flywencn")
+            return render_to_response('base.html')
 
     else:
 
