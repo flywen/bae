@@ -1,14 +1,24 @@
 # bae
 
-ÓĞ2¸öÔ¶³Ì²Ö¿â£º
-1¡¢bae£º
-#Ìí¼ÓÔ¶³Ì²Ö¿â
+æœ‰2ä¸ªè¿œç¨‹ä»“åº“ï¼š
+
+1ã€baeï¼š
+
+//æ·»åŠ è¿œç¨‹ä»“åº“
+
 git remote add origin https://git.duapp.com/appid4m6z2kda6o
-#µÚÒ»´ÎÌá½»Ê±£¬°Ñ±¾µØµÄmaster·ÖÖ§ºÍÔ¶³ÌµÄmaster·ÖÖ§¹ØÁª
+
+//ç¬¬ä¸€æ¬¡æäº¤æ—¶ï¼ŒæŠŠæœ¬åœ°çš„masteråˆ†æ”¯å’Œè¿œç¨‹çš„masteråˆ†æ”¯å…³è”
+
 git push -u origin master
-#Õı³£Ìá½»
+
+//æ­£å¸¸æäº¤
+
 git push origin master
 
-2¡¢github£º
+
+2ã€githubï¼š
+
 git remote add github https://github.com/flywen/bae.git
+
 git push -u github master
