@@ -46,6 +46,7 @@ def weixin(request):
         MsgType = xml.find('MsgType').text
         Content = xml.find('Content').text.encode('utf8')
         info = getweather(Content)
+        infoo = u'今天天气：'+info['weather']+u' 温度：'+ info['temp']
         MsgId = xml.find('MsgId').text 
         reply_xml = """<xml>
         <ToUserName><![CDATA[%s]]></ToUserName>
@@ -53,7 +54,7 @@ def weixin(request):
         <CreateTime>%s</CreateTime>
         <MsgType><![CDATA[text]]></MsgType>
         <Content><![CDATA[%s]]></Content>
-        </xml>"""%(FromUserName,ToUserName,CreateTime,u'今天天气：'+info['weather']+u' 温度：'+ info['temp'])
+        </xml>"""%(FromUserName,ToUserName,CreateTime,infoo)
         return HttpResponse(reply_xml,content_type='application/xml')
     
 # 以下使用juhe网的数据
