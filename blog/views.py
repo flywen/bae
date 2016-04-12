@@ -45,7 +45,12 @@ def weixin(request):
         MsgType = xml.find('MsgType').text
         Content = xml.find('Content').text.encode('utf8')
         info = getweather(Content)
-        infoo = u'今天天气：'+info['weather']+u' 温度：'+ info['temp']
+        if type(info) == type('a'):
+            infoo = info
+        else:
+            infoo = u'今天天气：'+info['weather']+u' 温度：'+ info['temp']
+        
+            
         MsgId = xml.find('MsgId').text 
         reply_xml = """<xml>
         <ToUserName><![CDATA[%s]]></ToUserName>
