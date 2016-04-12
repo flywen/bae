@@ -8,7 +8,6 @@ from xml.etree import ElementTree as etree
 from django.utils.encoding import smart_str, smart_unicode
 import urllib2
 import json
-from cairo._cairo import CONTENT_ALPHA
 
 
 # Create your views here.
