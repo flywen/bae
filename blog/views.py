@@ -8,6 +8,7 @@ from xml.etree import ElementTree as etree
 from django.utils.encoding import smart_str, smart_unicode
 import urllib2
 import json
+from cairo._cairo import CONTENT_ALPHA
 
 
 # Create your views here.
@@ -44,6 +45,7 @@ def weixin(request):
         CreateTime = xml.find('CreateTime').text
         MsgType = xml.find('MsgType').text
         Content = xml.find('Content').text.encode('utf8')
+        info = getweather(Content)
         MsgId = xml.find('MsgId').text 
         reply_xml = """<xml>
         <ToUserName><![CDATA[%s]]></ToUserName>
@@ -51,7 +53,7 @@ def weixin(request):
         <CreateTime>%s</CreateTime>
         <MsgType><![CDATA[text]]></MsgType>
         <Content><![CDATA[%s]]></Content>
-        </xml>"""%(FromUserName,ToUserName,CreateTime,getweather(Content))
+        </xml>"""%(FromUserName,ToUserName,CreateTime,u'今天天气：'+info['weather']+u' 温度：'+ info['temp'])
         return HttpResponse(reply_xml,content_type='application/xml')
     
 # 以下使用juhe网的数据
@@ -69,7 +71,8 @@ def weixin(request):
 
 # 以下使用baidu的数据
 def getweather(city):
-    url = 'http://apis.baidu.com/apistore/weatherservice/citylist?cityname=%s'%city
+#     url = 'http://apis.baidu.com/apistore/weatherservice/citylist?cityname=%s'%city
+    url = 'http://apis.baidu.com/apistore/weatherservice/cityname?cityname=%s'%city
     req = urllib2.Request(url)
 
     req.add_header("apikey", "856a44046264ba4bdfdbcdb8f62ca935")
@@ -78,7 +81,12 @@ def getweather(city):
     content = resp.read()
     weather = json.loads(content)
     if weather['errNum'] == 0:
-        info = weather['retData']['province_cn']
+        info = weather['retData']
     else:
         info = '请输入正确的城市名！'
     return info
+
+def wxtest(request):
+    city = '武汉'
+    info = getweather(city)
+    return HttpResponse(u'今天天气：'+info['weather']+u' 温度：'+ info['temp'])
