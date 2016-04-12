@@ -54,15 +54,31 @@ def weixin(request):
         </xml>"""%(FromUserName,ToUserName,CreateTime,getweather(Content))
         return HttpResponse(reply_xml,content_type='application/xml')
     
-   
-def getweather(content):
-        url_start = 'http://op.juhe.cn/onebox/weather/query?cityname='
-        url_end = '&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
-        url = url_start + content +url_end
-        jj = urllib2.urlopen(url)
-        weather = json.loads(jj.read())
-        if weather['error_code'] == 0:
-            infoo = weather['result']['data']['realtime']['weather']['info'].encode('utf8')
-        else: 
-            infoo = '请输入正确的城市名！'
-        return infoo
+# 以下使用juhe网的数据
+# def getweather(content):
+#         url_start = 'http://op.juhe.cn/onebox/weather/query?cityname='
+#         url_end = '&dtype=&key=2d887e93ed2cadde67d2a1f7d0d282c6'
+#         url = url_start + content +url_end
+#         jj = urllib2.urlopen(url)
+#         weather = json.loads(jj.read())
+#         if weather['error_code'] == 0:
+#             info = weather['result']['data']['realtime']['weather']['info'].encode('utf8')
+#         else: 
+#             info = '请输入正确的城市名！'
+#         return info
+
+# 以下使用baidu的数据
+def getweather(city):
+    url = 'http://apis.baidu.com/apistore/weatherservice/citylist?cityname=%s'%city
+    req = urllib2.Request(url)
+
+    req.add_header("apikey", "856a44046264ba4bdfdbcdb8f62ca935")
+
+    resp = urllib2.urlopen(req)
+    content = resp.read()
+    weather = json.loads(content)
+    if weather['errNum'] == 0:
+        info = weather['retData']['province_cn']
+    else:
+        info = '请输入正确的城市名！'
+    return info
