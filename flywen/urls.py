@@ -19,7 +19,9 @@ from blog.views import *
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$',test),
+#     url(r'^blog/', include('blog.urls')),
+    url(r'^', include('blog.urls')),
     url(r'^weixin/', weixin),
-    url(r'^wxtest/', wxtest)
+    url(r'^wxtest/', wxtest),
+    url('^', include('django.contrib.auth.urls'))
 ]
