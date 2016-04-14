@@ -82,16 +82,27 @@ WSGI_APPLICATION = 'flywen.wsgi.application'
 #     }
 # }
 
-
-DATABASES = { 
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'blog',
-        'USER': 'root',
-        'PASSWORD': '111111', 
-        'HOST': '127.0.0.1',
-    }   
-}
+if 'SERVER_SOFTWARE' in os.environ:
+    DATABASES = { 
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'veudZbUbUqUhqTaalbuf',
+            'USER': 'b3f010237b49410aa9c4e7ecdc91fb10',
+            'PASSWORD': '0c002424312b46d2b5c565d7359803c8', 
+            'HOST': 'sqld.duapp.com',
+            'PORT': '4050'
+        }   
+    }
+else:
+    DATABASES = { 
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'blog',
+            'USER': 'root',
+            'PASSWORD': '111111', 
+            'HOST': '127.0.0.1',
+        }   
+    }
 
 
 # Internationalization
