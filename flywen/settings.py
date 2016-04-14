@@ -1,3 +1,4 @@
+#-*- coding:utf-8 -*-
 """
 Django settings for flywen project.
 
@@ -82,6 +83,7 @@ WSGI_APPLICATION = 'flywen.wsgi.application'
 #     }
 # }
 
+#判断是BAE环境还是本地开发环境
 if 'SERVER_SOFTWARE' in os.environ:
     DATABASES = { 
         'default': {

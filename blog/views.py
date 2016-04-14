@@ -16,12 +16,19 @@ from django.views.generic.edit import FormView
 from forms import ArticlePublishForm
 from django.views.generic.detail import DetailView
 from django.core.urlresolvers import reverse
+from django.contrib.admin.views.decorators import staff_member_required
 
 # Create your views here.
 
 def blog(request):
     content = {'test': 'asdfjdsapfijpgfjpeij'}
     return render_to_response('blog_index.html', content)
+
+class AdminRequiredMixin(object):
+    @classmethod
+    def as_view(cls, **initkwargs):
+        view = super(AdminRequiredMixin, cls).as_view(**initkwargs)
+        return staff_member_required(view)
 
 class ArticleListView(ListView):
     template_name = 'blog_index.html'
@@ -43,7 +50,8 @@ class ArticleListView(ListView):
 
   
 
-class ArticlePublishView(FormView):
+# class ArticlePublishView(FormView):
+class ArticlePublishView(FormView, AdminRequiredMixin):
     template_name = 'article_publish.html'
     form_class = ArticlePublishForm
     success_url = '/'
