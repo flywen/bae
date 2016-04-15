@@ -66,9 +66,9 @@ class ArticleDetailView(DetailView):
     template_name = 'article_detail.html'
 
     def get_object(self, **kwargs):
-        title = self.kwargs.get('title')
+        id = self.kwargs.get('id')
         try:
-            article = Article.objects.get(title=title)
+            article = Article.objects.get(id=id)
             article.views += 1
             article.save()
             article.tags = article.tags.split()
@@ -83,11 +83,11 @@ class ArticleEditView(FormView):
     article = None
 
     def get_initial(self, **kwargs):
-        title = self.kwargs.get('title')
+        id = self.kwargs.get('id')
         try:
-            self.article = Article.objects.get(title=title)
+            self.article = Article.objects.get(id=id)
             initial = {
-                'title': title,
+                'title': self.article.title,
                 'content': self.article.content_md,
                 'tags': self.article.tags,
             }
@@ -100,13 +100,21 @@ class ArticleEditView(FormView):
         return super(ArticleEditView, self).form_valid(form)
 
     def get_success_url(self):
-        title = self.request.POST.get('title')
-        success_url = reverse('article_detail', args=(title,))
+#         id = self.request.POST.get('id')
+        id = self.kwargs.get('id')
+        success_url = reverse('article_detail', args=(id,))
         return success_url
+
+def articledel(request, id):
+    p = Article.objects.get(id=id)
+    p.delete()
+    return HttpResponseRedirect('/')
+    
+    
     
 def logout(request):
     auth.logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/weixin')
 
 
 

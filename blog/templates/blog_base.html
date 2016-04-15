@@ -10,6 +10,14 @@
      
  </head>
   <body>
+  <!-- 删除提示 -->
+  <script language="javascript">
+    function delcfm() {
+        if (!confirm("确认要删除？!!")) {
+            window.event.returnValue = false;
+        }
+    }
+</script>
   
     {% block nav %}
       {% include "blog_nav.html" %}
