@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^', include('blog.urls')),
     url(r'^weixin/', weixin),
     url(r'^wxtest/', wxtest),
-    url('^', include('django.contrib.auth.urls'))
+    url('^', include('django.contrib.auth.urls')),
+    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
 ]

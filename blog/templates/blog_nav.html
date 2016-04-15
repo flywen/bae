@@ -19,15 +19,20 @@
       <ul class="nav navbar-nav">
         <li><a href="#">关于</a></li>
       </ul>
-      {% if user.is_staff %}
+      <!-- 判断用户是否已经登录 -->
+      {% if user.is_authenticated %}
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="/article/publish">文章发布</a></li>
+        <li><a href="/logout">退出</a></li>
       </ul>
       {% else %}
       <ul class="nav navbar-nav navbar-right">
         <li><a href="/login">登录</a></li>
       </ul>
       {% endif %}
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/article/publish">文章发布</a></li>
+      </ul>
+      
       </div>
   </div>
 </nav>

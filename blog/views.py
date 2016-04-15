@@ -1,7 +1,7 @@
 #-*- coding:utf-8 -*-
 from django.shortcuts import render, render_to_response
 from django.template.context_processors import request
-from django.http.response import HttpResponse, Http404
+from django.http.response import HttpResponse, Http404, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 import hashlib
 from xml.etree import ElementTree as etree
@@ -17,6 +17,8 @@ from forms import ArticlePublishForm
 from django.views.generic.detail import DetailView
 from django.core.urlresolvers import reverse
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -24,11 +26,11 @@ def blog(request):
     content = {'test': 'asdfjdsapfijpgfjpeij'}
     return render_to_response('blog_index.html', content)
 
-class AdminRequiredMixin(object):
-    @classmethod
-    def as_view(cls, **initkwargs):
-        view = super(AdminRequiredMixin, cls).as_view(**initkwargs)
-        return staff_member_required(view)
+# class AdminRequiredMixin(object):
+#     @classmethod
+#     def as_view(cls, **initkwargs):
+#         view = super(AdminRequiredMixin, cls).as_view(**initkwargs)
+#         return staff_member_required(view)
 
 class ArticleListView(ListView):
     template_name = 'blog_index.html'
@@ -49,9 +51,8 @@ class ArticleListView(ListView):
 
 
   
-
 # class ArticlePublishView(FormView):
-class ArticlePublishView(FormView, AdminRequiredMixin):
+class ArticlePublishView(FormView):
     template_name = 'article_publish.html'
     form_class = ArticlePublishForm
     success_url = '/'
@@ -60,7 +61,7 @@ class ArticlePublishView(FormView, AdminRequiredMixin):
         form.save(self.request.user.username)
         return super(ArticlePublishView, self).form_valid(form)
     
-    
+  
 class ArticleDetailView(DetailView):
     template_name = 'article_detail.html'
 
@@ -74,7 +75,8 @@ class ArticleDetailView(DetailView):
         except Article.DoesNotExist:
             raise Http404("Article does not exist")
         return article
-    
+ 
+     
 class ArticleEditView(FormView):
     template_name = 'article_publish.html'
     form_class = ArticlePublishForm
@@ -102,6 +104,10 @@ class ArticleEditView(FormView):
         success_url = reverse('article_detail', args=(title,))
         return success_url
     
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect('/')
+
 
 
 @csrf_exempt
@@ -180,6 +186,7 @@ def getweather(city):
         info = '请输入正确的城市名！'
     return info
 
+@login_required
 def wxtest(request):
     city = '武汉'
     info = getweather(city)

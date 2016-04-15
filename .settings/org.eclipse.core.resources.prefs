@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//blog/forms.py=utf-8
+encoding//blog/urls.py=utf-8
 encoding//blog/views.py=utf-8
 encoding//flywen/settings.py=utf-8
 encoding/<project>=UTF-8

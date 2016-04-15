@@ -137,4 +137,4 @@ SITE_ROOT = os.path.abspath(os.path.join(SITE_ROOT, '../'))
 # STATIC_ROOT = os.path.join(SITE_ROOT, 'static')
 # STATICFILES_DIRS = (os.path.join(SITE_ROOT, 'static'),)
 
-LOGIN_REDIRECT_URL = '/article/publish'
+LOGIN_REDIRECT_URL = '/'
