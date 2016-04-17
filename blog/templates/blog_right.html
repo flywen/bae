@@ -1,30 +1,13 @@
   <div class="panel panel-default">
 			<div class="panel-heading">
-			文章分类
+			文章Tags
 			</div>
 			<div class="list-group">
-			
-				<a href="/blog/?id=36" class="list-group-item">
-					<span class="badge">23</span>
-					Python
+			    {% for o in tags_list %}
+				<a href="/article/tags/{{ o.tags }}" class="list-group-item">
+					<span class="badge">{{ o.count }}</span>
+					{{ o.tags }}
 				</a>
-			
-				<a href="/blog/?id=3" class="list-group-item">
-					<span class="badge">34</span>
-					Shell
-				</a>
-			
-				<a href="/blog/?id=15" class="list-group-item">
-					<span class="badge">30</span>
-					Django
-				</a>
-			
-				<a href="/blog/?id=10" class="list-group-item">
-					<span class="badge">2</span>
-					DVB
-				</a>
-			
-						
-							
+			    {% endfor %}
 			</div>
     </div>

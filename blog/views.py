@@ -1,11 +1,10 @@
 #-*- coding:utf-8 -*-
-from django.shortcuts import render, render_to_response
-from django.template.context_processors import request
+from django.shortcuts import render_to_response
 from django.http.response import HttpResponse, Http404, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 import hashlib
 from xml.etree import ElementTree as etree
-from django.utils.encoding import smart_str, smart_unicode
+from django.utils.encoding import smart_str
 import urllib2
 import json
 from blog.models import Article
@@ -16,38 +15,67 @@ from django.views.generic.edit import FormView
 from forms import ArticlePublishForm
 from django.views.generic.detail import DetailView
 from django.core.urlresolvers import reverse
-from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.template.context import RequestContext
 
 # Create your views here.
 
-def blog(request):
-    content = {'test': 'asdfjdsapfijpgfjpeij'}
-    return render_to_response('blog_index.html', content)
-
-# class AdminRequiredMixin(object):
-#     @classmethod
-#     def as_view(cls, **initkwargs):
-#         view = super(AdminRequiredMixin, cls).as_view(**initkwargs)
-#         return staff_member_required(view)
-
-class ArticleListView(ListView):
-    template_name = 'blog_index.html'
-
-    def get_queryset(self, **kwargs):
+def blog(request, tags='all'):
+    if tags == 'all':
         object_list = Article.objects.all().order_by(F('created').desc())[:100]
-        paginator = Paginator(object_list, 10)
-        page = self.request.GET.get('page')
-        try:
-            object_list = paginator.page(page)
-        except PageNotAnInteger:
-            # If page is not an integer, deliver first page.
-            object_list = paginator.page(1)
-        except EmptyPage:
-            # If page is out of range (e.g. 9999), deliver last page of results.
-            object_list = paginator.page(paginator.num_pages)
-        return object_list
+    else:
+        object_list = Article.objects.filter(tags=tags).order_by(F('created').desc())[:100]
+    tags_list = Article.objects.values('tags').distinct()
+    paginator = Paginator(object_list, 8)
+    page = request.GET.get('page')
+    try:
+        object_list = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        object_list = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        object_list = paginator.page(paginator.num_pages)
+#   这里使用context_instance=RequestContext(request)是因为模板中使用了{% if user.is_authenticated %}来判断用户是否登录，需要用到request？
+    return render_to_response('blog_index.html', {'object_list': object_list, 'tags_list': tags_list}, context_instance=RequestContext(request))
+
+#使用tags检索文章的函数，现在修改为直接使用blog函数
+# def blog_tags(request, tags):
+#     object_list = Article.objects.filter(tags=tags).order_by(F('created').desc())[:100]
+#     tags_list = Article.objects.values('tags').distinct()
+#     paginator = Paginator(object_list, 3)
+#     page = request.GET.get('page')
+#     try:
+#         object_list = paginator.page(page)
+#     except PageNotAnInteger:
+#         # If page is not an integer, deliver first page.
+#         object_list = paginator.page(1)
+#     except EmptyPage:
+#         # If page is out of range (e.g. 9999), deliver last page of results.
+#         object_list = paginator.page(paginator.num_pages)
+#     return render_to_response('blog_index.html', {'object_list': object_list, 'tags_list': tags_list})
+
+
+# 由于无法解决返回object_list的同时返回一个tagslist，改用普通视图函数blog展示主页
+# class ArticleListView(ListView):
+#     template_name = 'blog_index.html'
+# #     tags_list = Article.objects.values('tags').distinct() 
+#     context_object_name = 'tags_list'
+# 
+#     def get_queryset(self, **kwargs):
+#         object_list = Article.objects.all().order_by(F('created').desc())[:100]
+#         paginator = Paginator(object_list, 2)
+#         page = self.request.GET.get('page')
+#         try:
+#             object_list = paginator.page(page)
+#         except PageNotAnInteger:
+#             # If page is not an integer, deliver first page.
+#             object_list = paginator.page(1)
+#         except EmptyPage:
+#             # If page is out of range (e.g. 9999), deliver last page of results.
+#             object_list = paginator.page(paginator.num_pages)
+#         return object_list
 
 
   
