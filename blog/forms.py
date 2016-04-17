@@ -14,7 +14,7 @@ class ArticlePublishForm(forms.Form):
     title = forms.CharField(
         label=u'文章标题',
         max_length=50,
-        widget=forms.TextInput(attrs={'class': '', 'placeholder': u'文章标题，记得在标题末尾添加".html"'}),
+        widget=forms.TextInput(attrs={'class': '', 'placeholder': u'文章标题'}),
         )
 
     content = forms.CharField(
@@ -36,13 +36,14 @@ class ArticlePublishForm(forms.Form):
         now = datetime.datetime.now()
         content_md = cd['content']
         content_html = markdown.markdown(cd['content'])
-        re_title = '<h\d>(.+)</h\d>'
-        data = content_html.split('\n')
-        for line in data:
-            title_info = re.findall(re_title, line)
-            if title_info:
-                title_zh = title_info[0]
-                break
+#         下面被注释的这段代码取内容中的第一个标题作为title_zh
+#         re_title = '<h\d>(.+)</h\d>'
+#         data = content_html.split('\n')
+#         for line in data:
+#             title_info = re.findall(re_title, line)
+#             if title_info:
+#                 title_zh = title_info[0]
+#                 break
         url = '/article/%s' % (title)
         tags = cd['tags']
         if article:
