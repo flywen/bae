@@ -4,7 +4,7 @@
 			</div>
 			<div class="list-group">
 			    {% for o in tags_list %}
-			    <a href="/article/tags/{{ o.tags | urlencode }}" class="list-group-item">
+			    <a href="/article/tags/{{ o.tags }}" class="list-group-item">
 					<span class="badge">{{ o.ct }}</span>
 					{{ o.tags }}
 				</a>
