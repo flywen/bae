@@ -35,7 +35,8 @@ def blog(request, tags='all'):
     if tags == 'all':
         object_list = Article.objects.all().order_by(F('created').desc())[:100]
     else:
-#         tags = urllib.unquote(tags)
+        aaa = tags
+        aaa1 = urllib.unquote(tags)
         object_list = Article.objects.filter(tags=tags).order_by(F('created').desc())[:100]
     paginator = Paginator(object_list, 8)
     page = request.GET.get('page')
@@ -48,8 +49,8 @@ def blog(request, tags='all'):
         # If page is out of range (e.g. 9999), deliver last page of results.
         object_list = paginator.page(paginator.num_pages)
 #   这里使用context_instance=RequestContext(request)是因为模板中使用了{% if user.is_authenticated %}来判断用户是否登录，需要用到request？
-    return render_to_response('blog_index.html', {'object_list': object_list, 'tags_list': tags_list}, context_instance=RequestContext(request))
-#     return render_to_response('blog_index.html', locals(), context_instance=RequestContext(request))
+#     return render_to_response('blog_index.html', {'object_list': object_list, 'tags_list': tags_list}, context_instance=RequestContext(request))
+    return render_to_response('blog_index.html', locals(), context_instance=RequestContext(request))
 
 #使用tags检索文章的函数，现在修改为直接使用blog函数
 # def blog_tags(request, tags):
