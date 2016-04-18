@@ -18,15 +18,23 @@ from django.core.urlresolvers import reverse
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.template.context import RequestContext
+from django.db import connection
 
 # Create your views here.
 
 def blog(request, tags='all'):
+#     使用传统方法获取的是一个list?
+#     cursor = connection.cursor()
+#     cursor.execute("SELECT tags, count(*) AS ct FROM blog_article GROUP BY tags")
+#     tags_list = cursor.fetchall()
+# 下面这句无法获取到各个tag的数量
+#     tags_list = Article.objects.values('tags').distinct()
+# 以下这句使用raw的方法来执行传统sql语句
+    tags_list = Article.objects.raw("SELECT *, count(*) AS ct FROM blog_article GROUP BY tags")
     if tags == 'all':
         object_list = Article.objects.all().order_by(F('created').desc())[:100]
     else:
         object_list = Article.objects.filter(tags=tags).order_by(F('created').desc())[:100]
-    tags_list = Article.objects.values('tags').distinct()
     paginator = Paginator(object_list, 8)
     page = request.GET.get('page')
     try:
@@ -39,6 +47,7 @@ def blog(request, tags='all'):
         object_list = paginator.page(paginator.num_pages)
 #   这里使用context_instance=RequestContext(request)是因为模板中使用了{% if user.is_authenticated %}来判断用户是否登录，需要用到request？
     return render_to_response('blog_index.html', {'object_list': object_list, 'tags_list': tags_list}, context_instance=RequestContext(request))
+#     return render_to_response('blog_index.html', locals(), context_instance=RequestContext(request))
 
 #使用tags检索文章的函数，现在修改为直接使用blog函数
 # def blog_tags(request, tags):

@@ -12,3 +12,7 @@ class Article(models.Model):
     views = models.IntegerField()
     created = models.DateTimeField()
     updated = models.DateTimeField()
+    
+class Tags(models.Model):
+    tag = models.CharField(max_length=50)
+    
