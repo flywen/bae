@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^article/publish', login_required(ArticlePublishView.as_view()), name='article_publish'),
 #     url(r'^article/(?P<title>\S+)$', ArticleDetailView.as_view(), name='article_detail'),
 #     url(r'^article/(?P<title>\w+\.?\w+)$', ArticleDetailView.as_view(), name='article_detail'),
-    url(r'^article/(?P<id>\w+)$', ArticleDetailView.as_view(), name='article_detail'),
+    url(r'^article/(?P<id>.+)$', ArticleDetailView.as_view(), name='article_detail'),
     url(r'^article/(?P<id>\w+)/edit$', ArticleEditView.as_view(), name='article_edit'),
     url(r'^article/(?P<id>\w+)/del$', articledel, name='article_del'),
 ]
