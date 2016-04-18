@@ -35,8 +35,8 @@ def blog(request, tags='all'):
     if tags == 'all':
         object_list = Article.objects.all().order_by(F('created').desc())[:100]
     else:
-        aaa = tags
-        aaa1 = urllib.unquote(str(tags)).decode('utf8')
+#         将url中的那种码转回中文
+        tags = urllib.unquote(str(tags)).decode('utf8')
         object_list = Article.objects.filter(tags=tags).order_by(F('created').desc())[:100]
     paginator = Paginator(object_list, 8)
     page = request.GET.get('page')
