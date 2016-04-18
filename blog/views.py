@@ -20,6 +20,7 @@ from django.contrib.auth.decorators import login_required
 from django.template.context import RequestContext
 from django.db import connection
 import urllib
+import os
 
 # Create your views here.
 
@@ -35,8 +36,10 @@ def blog(request, tags='all'):
     if tags == 'all':
         object_list = Article.objects.all().order_by(F('created').desc())[:100]
     else:
-#         将url中的那种码转回中文
-        tags = urllib.unquote(str(tags)).decode('utf8')
+#         将url中的那种码(类似:%E8%A7%86%E5%9B%BE)转回中文
+#         判断是BAE环境还是本地开发环境,本地传给视图的还是中文，没有被转成乱码
+        if 'SERVER_SOFTWARE' in os.environ:
+            tags = urllib.unquote(str(tags)).decode('utf8')
         object_list = Article.objects.filter(tags=tags).order_by(F('created').desc())[:100]
     paginator = Paginator(object_list, 8)
     page = request.GET.get('page')
