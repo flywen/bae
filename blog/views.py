@@ -19,6 +19,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.template.context import RequestContext
 from django.db import connection
+import urllib
 
 # Create your views here.
 
@@ -34,6 +35,7 @@ def blog(request, tags='all'):
     if tags == 'all':
         object_list = Article.objects.all().order_by(F('created').desc())[:100]
     else:
+        tags = urllib.unquote(tags)
         object_list = Article.objects.filter(tags=tags).order_by(F('created').desc())[:100]
     paginator = Paginator(object_list, 8)
     page = request.GET.get('page')
