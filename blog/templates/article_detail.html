@@ -18,7 +18,7 @@
       {% autoescape off %}
       {{ object.content_html }}
       {% endautoescape %}
-      <p class="updated">---------- 全文完（最近更新于 {{ object.updated|date:"Y/n/j G:i" }}） ----------</p>
+      <p class="updated">更新时间： {{ object.updated|date:"Y/n/j G:i" }}</p>
     </div>
   </div>
 </div>
