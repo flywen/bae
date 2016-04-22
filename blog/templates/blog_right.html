@@ -1,13 +1,22 @@
-  <div class="panel panel-default">
+<div class="panel panel-default">
 			<div class="panel-heading">
-			文章Tags
+			文章分类
 			</div>
 			<div class="list-group">
-			    {% for o in tags_list %}
-			    <a href="/article/tags/{{ o.tags }}" class="list-group-item">
+			    {% for o in classes_list %}
+			    <a href="/article/classes/{{ o.classes }}" class="list-group-item">
 					<span class="badge">{{ o.ct }}</span>
-					{{ o.tags }}
+					{{ o.classes }}
 				</a>
 			    {% endfor %}
 			</div>
-    </div>
+</div>
+
+<div class="side-tags">
+    <div class="mod-tit"><h4>热门话题</h4></div>
+    {% for o in tags_list_ok %}
+	<a href="/article/tags/{{ o }}" style="text-decoration:none">
+    <span class="{{ tags_class|random }}">{{ o }}</span>
+    </a>
+    {% endfor %}
+</div>

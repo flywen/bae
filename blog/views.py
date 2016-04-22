@@ -24,23 +24,38 @@ import os
 
 # Create your views here.
 
-def blog(request, tags='all'):
+def blog(request, classes='all', tags='all'):
 #     使用传统方法获取的是一个list?
 #     cursor = connection.cursor()
 #     cursor.execute("SELECT tags, count(*) AS ct FROM blog_article GROUP BY tags")
 #     tags_list = cursor.fetchall()
 # 下面这句无法获取到各个tag的数量
-#     tags_list = Article.objects.values('tags').distinct()
+    tags_list = Article.objects.values('tags').distinct()
+    tags_list_ok = []
+    # 使用空格分割tag
+    for o in tags_list:
+        for p in o['tags'].split():
+            tags_list_ok.append(p)
+    # 使用set函数去除重复tag
+    tags_list_ok = list(set(tags_list_ok))
+
+# 使用一个list传给模板，使其随机选择标签的风格，显示不同的颜色
+    tags_class = ["label label-default", "label label-primary", "label label-success", "label label-info", "label label-warning", "label label-danger"]
 # 以下这句使用raw的方法来执行传统sql语句
-    tags_list = Article.objects.raw("SELECT *, count(*) AS ct FROM blog_article GROUP BY tags")
-    if tags == 'all':
-        object_list = Article.objects.all().order_by(F('created').desc())[:100]
+    classes_list = Article.objects.raw("SELECT *, count(*) AS ct FROM blog_article GROUP BY classes")
+    if classes == 'all':
+        if tags == 'all':
+            object_list = Article.objects.all().order_by(F('created').desc())[:100]
+        else:
+            if 'SERVER_SOFTWARE' in os.environ:
+                tags = urllib.unquote(str(tags)).decode('utf8')
+            object_list = Article.objects.filter(tags__contains=tags).order_by(F('created').desc())[:100]
     else:
 #         将url中的那种码(类似:%E8%A7%86%E5%9B%BE)转回中文
 #         判断是BAE环境还是本地开发环境,本地传给视图的还是中文，没有被转成乱码
         if 'SERVER_SOFTWARE' in os.environ:
-            tags = urllib.unquote(str(tags)).decode('utf8')
-        object_list = Article.objects.filter(tags=tags).order_by(F('created').desc())[:100]
+            classes = urllib.unquote(str(classes)).decode('utf8')
+        object_list = Article.objects.filter(classes=classes).order_by(F('created').desc())[:100]
     paginator = Paginator(object_list, 8)
     page = request.GET.get('page')
     try:
@@ -75,9 +90,9 @@ def blog(request, tags='all'):
 # 由于无法解决返回object_list的同时返回一个tagslist，改用普通视图函数blog展示主页
 # class ArticleListView(ListView):
 #     template_name = 'blog_index.html'
-# #     tags_list = Article.objects.values('tags').distinct() 
+# #     tags_list = Article.objects.values('tags').distinct()
 #     context_object_name = 'tags_list'
-# 
+#
 #     def get_queryset(self, **kwargs):
 #         object_list = Article.objects.all().order_by(F('created').desc())[:100]
 #         paginator = Paginator(object_list, 2)
@@ -93,7 +108,7 @@ def blog(request, tags='all'):
 #         return object_list
 
 
-  
+
 # class ArticlePublishView(FormView):
 class ArticlePublishView(FormView):
     template_name = 'article_publish.html'
@@ -103,8 +118,8 @@ class ArticlePublishView(FormView):
     def form_valid(self, form):
         form.save(self.request.user.username)
         return super(ArticlePublishView, self).form_valid(form)
-    
-  
+
+
 class ArticleDetailView(DetailView):
     template_name = 'article_detail.html'
 
@@ -118,8 +133,8 @@ class ArticleDetailView(DetailView):
         except Article.DoesNotExist:
             raise Http404("Article does not exist")
         return article
- 
-     
+
+
 class ArticleEditView(FormView):
     template_name = 'article_publish.html'
     form_class = ArticlePublishForm
@@ -133,6 +148,7 @@ class ArticleEditView(FormView):
                 'title': self.article.title,
                 'content': self.article.content_md,
                 'tags': self.article.tags,
+                'classes': self.article.classes,
             }
             return initial
         except Article.DoesNotExist:
@@ -152,9 +168,9 @@ def articledel(request, id):
     p = Article.objects.get(id=id)
     p.delete()
     return HttpResponseRedirect('/')
-    
-    
-    
+
+
+
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect('/weixin')
@@ -195,9 +211,9 @@ def weixin(request):
             infoo = info
         else:
             infoo = u'今天天气：'+info['weather']+u' 温度：'+ info['temp']
-        
-            
-        MsgId = xml.find('MsgId').text 
+
+
+        MsgId = xml.find('MsgId').text
         reply_xml = """<xml>
         <ToUserName><![CDATA[%s]]></ToUserName>
         <FromUserName><![CDATA[%s]]></FromUserName>
@@ -206,7 +222,7 @@ def weixin(request):
         <Content><![CDATA[%s]]></Content>
         </xml>"""%(FromUserName,ToUserName,CreateTime,infoo)
         return HttpResponse(reply_xml,content_type='application/xml')
-    
+
 # 以下使用juhe网的数据
 # def getweather(content):
 #         url_start = 'http://op.juhe.cn/onebox/weather/query?cityname='
@@ -216,7 +232,7 @@ def weixin(request):
 #         weather = json.loads(jj.read())
 #         if weather['error_code'] == 0:
 #             info = weather['result']['data']['realtime']['weather']['info'].encode('utf8')
-#         else: 
+#         else:
 #             info = '请输入正确的城市名！'
 #         return info
 

@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'wxtest/', wxtest),
     url(r'^$', blog, name = 'blog'),
     url(r'^article/tags/(?P<tags>.+)$', blog, name ='blog_tags'),
+    url(r'^article/classes/(?P<classes>.+)$', blog, name ='blog_classes'),
     #使用login_required函数，进入ArticlePublishView（基于类的视图）页面前需登录，类似视图函数前加修饰器@login_required
     url(r'^article/publish', login_required(ArticlePublishView.as_view()), name='article_publish'),
 #     url(r'^article/(?P<title>\S+)$', ArticleDetailView.as_view(), name='article_detail'),

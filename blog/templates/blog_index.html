@@ -11,7 +11,7 @@
           <a href="{% url 'article_edit' o.id %}"><class="pull-right right" title="文章修改"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
           <a href="{% url 'article_del' o.id %}" onClick="delcfm()"><class="pull-right right" title="删除"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
           {% endif %}</h3>  
-          <p>阅读次数：{{ o.views }}，作者：{{ o.author }}，发布时间：{{ o.created|date:"Y/n/j" }}，文章标签：{{ o.tags }}</p>
+          <p>阅读次数：{{ o.views }}，作者：{{ o.author }}，发布时间：{{ o.created|date:"Y/n/j" }}，文章分类：{{ o.tags }}</p>
         </div>
         <div class="summary">
           {% autoescape off %}

@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# coding=utf-8
+# encoding: utf8
 
 import datetime
 import re
@@ -29,6 +28,12 @@ class ArticlePublishForm(forms.Form):
         widget=forms.TextInput(attrs={'class': '', 'placeholder': u'文章标签，以空格进行分割'}),
         )
 
+    classes = forms.CharField(
+        label=u'分类',
+        max_length=30,
+        widget=forms.TextInput(attrs={'class': '', 'placeholder': u'文章分类'}),
+        )
+
     def save(self, username, article=None):
         cd = self.cleaned_data
         title = cd['title']
@@ -46,6 +51,7 @@ class ArticlePublishForm(forms.Form):
 #                 break
         url = '/article/%s' % (title)
         tags = cd['tags']
+        classes = cd['classes']
         if article:
             article.url = url
             article.title = title
@@ -54,6 +60,7 @@ class ArticlePublishForm(forms.Form):
             article.content_html = content_html
             article.tags = tags
             article.updated = now
+            article.classes = classes
         else:
             article = Article(
                 url=url,
@@ -63,6 +70,7 @@ class ArticlePublishForm(forms.Form):
                 content_md=content_md,
                 content_html=content_html,
                 tags=tags,
+                classes=classes,
                 views=0,
                 created=now,
                 updated=now)
