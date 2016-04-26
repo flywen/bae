@@ -173,7 +173,7 @@ def articledel(request, id):
 
 def logout(request):
     auth.logout(request)
-    return HttpResponseRedirect('/weixin')
+    return HttpResponseRedirect('/')
 
 
 

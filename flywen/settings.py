@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'weixin',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -85,25 +86,25 @@ WSGI_APPLICATION = 'flywen.wsgi.application'
 
 #判断是BAE环境还是本地开发环境
 if 'SERVER_SOFTWARE' in os.environ:
-    DATABASES = { 
+    DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'veudZbUbUqUhqTaalbuf',
             'USER': 'b3f010237b49410aa9c4e7ecdc91fb10',
-            'PASSWORD': '0c002424312b46d2b5c565d7359803c8', 
+            'PASSWORD': '0c002424312b46d2b5c565d7359803c8',
             'HOST': 'sqld.duapp.com',
             'PORT': '4050'
-        }   
+        }
     }
 else:
-    DATABASES = { 
+    DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'blog',
             'USER': 'root',
-            'PASSWORD': '111111', 
+            'PASSWORD': '111111',
             'HOST': '127.0.0.1',
-        }   
+        }
     }
 
 
@@ -111,7 +112,7 @@ else:
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
 # LANGUAGE_CODE = 'en-us'
-# 
+#
 # TIME_ZONE = 'UTC'
 # 修改为：
 LANGUAGE_CODE = 'zh-CN'
