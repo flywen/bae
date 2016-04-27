@@ -7,7 +7,6 @@ from django.views.generic import TemplateView
 urlpatterns = [
 #     url(r'^$', ArticleListView.as_view(), name = 'blog'),
     url(r'logout/', logout),
-    url(r'wxtest/', wxtest),
     url(r'^$', blog, name = 'blog'),
     url(r'^article/tags/(?P<tags>.+)$', blog, name ='blog_tags'),
     url(r'^article/classes/(?P<classes>.+)$', blog, name ='blog_classes'),

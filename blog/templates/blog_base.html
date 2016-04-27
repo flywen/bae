@@ -28,18 +28,12 @@
     {% endblock %}
     
  
-<div class="container">
- <div class="col-sm-9">
+<div class="container" style="padding-left:110px; padding-right:110px;">
     {% block content %}{% endblock %}
- </div> 
- <div class="col-sm-3">
     {% block right %}{% endblock %}
-</div> 
     {% block about %}{% endblock %}
-    {% block footer %}{% endblock %}
-
-    {% block scripts %}{% endblock %}
- 
  </div> 
+    {% block footer %}{% endblock %}
+    {% block scripts %}{% endblock %}
   </body>
 </html>

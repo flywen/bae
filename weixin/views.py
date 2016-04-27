@@ -9,6 +9,7 @@ from django.utils.encoding import smart_str
 import urllib2
 import json
 from django.contrib.auth.decorators import login_required
+from models import Linux
 
 # Create your views here.
 @csrf_exempt
@@ -88,7 +89,9 @@ def getweather(city):
     return info
 
 @login_required
-def wxtest(request):
-    city = '武汉'
-    info = getweather(city)
-    return HttpResponse(u'今天天气：'+info['weather']+u' 温度：'+ info['temp'])
+def wxtest(request,name):
+    result = Linux.objects.get(name = name)
+    return HttpResponse(result.content)
+    # city = '武汉'
+    # info = getweather(city)
+    # return HttpResponse(u'今天天气：'+info['weather']+u' 温度：'+ info['temp'])

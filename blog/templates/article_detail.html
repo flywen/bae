@@ -1,7 +1,6 @@
 {% extends 'blog_base.html' %}
 
 {% block content %}
-<div class="container">
     <div class="article">
         <h3>{{ object.title }}</h3>
     </div>
@@ -25,5 +24,4 @@
       <p class="updated">更新时间： {{ object.updated|date:"Y/n/j G:i" }}</p>
     </div>
   </div>
-</div>
 {% endblock %}

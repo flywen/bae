@@ -2,6 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
+<div class="col-sm-9">
  <div class="row">
       {% for o in object_list %}
       <div class="article-item">
@@ -37,8 +38,14 @@
         </ul>
       </nav>
  </div>
+</div>
 {% endblock %}
 
 {% block right %}
 {% include "blog_right.html" %}
 {% endblock %}
+
+{% block footer %}
+{% include "blog_footer.html" %}
+{% endblock %}
+
