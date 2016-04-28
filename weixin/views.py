@@ -40,12 +40,15 @@ def weixin(request):
         FromUserName = xml.find('FromUserName').text
         CreateTime = xml.find('CreateTime').text
         MsgType = xml.find('MsgType').text
-        Content = xml.find('Content').text.encode('utf8')
-        info = getweather(Content)
-        if type(info) == type('a'):
-            infoo = info
+        Content = xml.find('Content').text
+        if Content >= u'\u4e00' and Content <= u'\u9fa5':
+            info = getweather(Content.encode('utf8'))
+            if type(info) == type('a'):
+                infoo = info
+            else:
+                infoo = u'今天天气：'+info['weather']+u' 温度：'+ info['temp']
         else:
-            infoo = u'今天天气：'+info['weather']+u' 温度：'+ info['temp']
+            infoo = getcomment(Content)
 
 
         MsgId = xml.find('MsgId').text
@@ -87,6 +90,16 @@ def getweather(city):
     else:
         info = '请输入正确的城市名！'
     return info
+
+# 取命令描述的函数
+def getcomment(command):
+    try:
+        result = Linux.objects.get(name=command)
+        return result.content
+    except:
+        return "%s不是有效的命令或者没有收录！" %command
+
+
 
 @login_required
 def wxtest(request,name):
