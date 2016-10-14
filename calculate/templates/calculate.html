@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Lisa's calculate </title>
+    {% load staticfiles %}
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript">
+        function is_eq(thisform) {
+            if (document.getElementsByName("sum_cal")[0].value=={{ sum_ok }}){
+                alert("正确")
+            }
+            else{
+                alert("错误！")
+            }
+            }
+    </script>
+ </head>
+<body>
+
+<div class="text" style=" text-align:center;"><h2>欢迎Lisa使用口算系统！</h2></div>
+
+<!--
+<div style="background-color: #2b542c; height: 200px;color: #f5f5f5; font-size: 160px;text-align: center" >8+8=16</div>
+-->
+<br>
+<br>
+<form action="" method="post" onsubmit="return is_eq(this)">{% csrf_token %}
+    <div class="text" style="text-align: center; font-size: xx-large"> {{ num1 }} + {{ num2 }} =
+        <input type="number" name="sum_cal">
+        <button type="submit" class="btn btn-default">提交</button>
+    </div>
+</form>
+
+
+
+
+</body>
+</html>

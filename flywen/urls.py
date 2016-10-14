@@ -17,12 +17,14 @@ from django.conf.urls import include, url
 from django.contrib import admin
 # from blog.views import *
 from weixin.views import weixin, wxtest
+from calculate.views import calculate
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 #     url(r'^blog/', include('blog.urls')),
     url(r'^', include('blog.urls')),
     url(r'^weixin/', weixin),
+    url(r'^calculate/', calculate),
     # url(r'^wxtest/', wxtest),
     url(r'^wxtest/(?P<name>\w+)/$', wxtest),
     url('^', include('django.contrib.auth.urls')),
